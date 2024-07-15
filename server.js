@@ -13,7 +13,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // Resolve IMAGE_DIRECTORY to an absolute path
-const IMAGE_DIRECTORY = path.resolve(__dirname, "../../ImageNAS/LongAPP/");
+const IMAGE_DIRECTORY = path.resolve(__dirname, "home/drago/Images/");
 
 // Route to list all images
 app.get("/images", (req, res) => {
