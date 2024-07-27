@@ -30,7 +30,8 @@ app.get("/images", (req, res) => {
         file.endsWith(".jpg") ||
         file.endsWith(".jpeg") ||
         file.endsWith(".png") ||
-        file.endsWith(".gif")
+        file.endsWith(".gif") ||
+        file.endsWith(".webp")
     );
     const imageLinks = imageFiles.map(
       (file) => `${req.protocol}://${req.get("host")}/images/${file}`
