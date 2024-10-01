@@ -100,7 +100,7 @@ app.post("/upload-image", upload.single("image"), (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
-  const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+  const imageUrl = `${req.protocol}://${req.get("host")}/student/${
     req.file.filename
   }`;
   res.json({ message: "Image uploaded successfully", url: imageUrl });
