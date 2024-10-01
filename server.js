@@ -73,6 +73,28 @@ app.get("/images", (req, res) => {
   });
 });
 
+// Route to list all images
+app.get("/student", (req, res) => {
+  fs.readdir(STUDENT_DIRECTORY, (err, files) => {
+    if (err) {
+      return res.status(500).send("Unable to scan directory");
+    }
+
+    const imageFiles = files.filter(
+      (file) =>
+        file.endsWith(".jpg") ||
+        file.endsWith(".jpeg") ||
+        file.endsWith(".png") ||
+        file.endsWith(".gif") ||
+        file.endsWith(".webp")
+    );
+    const imageLinks = imageFiles.map(
+      (file) => `${req.protocol}://${req.get("host")}/student/${file}`
+    );
+    res.json(imageLinks);
+  });
+});
+
 // Route to upload an image
 app.post("/upload-image", upload.single("image"), (req, res) => {
   if (!req.file) {
