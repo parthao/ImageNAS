@@ -21,7 +21,7 @@ const VIDEO_DIRECTORY = path.resolve(__dirname, "/home/drago/Videos/");
 
 const STUDENT_DIRECTORY = path.resolve(
   __dirname,
-  "/home/drago/Students/Images"
+  "/home/drago/Students/Images/"
 );
 
 // Set up multer for image uploads
