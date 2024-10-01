@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
+const multer = require("multer");
 
 const app = express();
 
@@ -17,6 +18,38 @@ const IMAGE_DIRECTORY = path.resolve(__dirname, "/home/drago/Images/");
 
 // Resolve IMAGE_DIRECTORY to an absolute path
 const VIDEO_DIRECTORY = path.resolve(__dirname, "/home/drago/Videos/");
+
+const STUDENT_DIRECTORY = path.resolve(
+  __dirname,
+  "/home/drago/Students/Images"
+);
+
+// Set up multer for image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, STUDENT_DIRECTORY); // Store images in the IMAGE_DIRECTORY
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Use current timestamp to avoid filename collisions
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif|webp/;
+    const extname = filetypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimetype = filetypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb("Error: Images Only!");
+    }
+  },
+});
 
 // Route to list all images
 app.get("/images", (req, res) => {
@@ -38,6 +71,17 @@ app.get("/images", (req, res) => {
     );
     res.json(imageLinks);
   });
+});
+
+// Route to upload an image
+app.post("/upload-image", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+  const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+    req.file.filename
+  }`;
+  res.json({ message: "Image uploaded successfully", url: imageUrl });
 });
 
 // Route to list all videos
