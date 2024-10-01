@@ -134,6 +134,19 @@ app.get("/images/:filename", (req, res) => {
   });
 });
 
+// Route to serve an individual studednt image
+app.get("/student/:filename", (req, res) => {
+  const filePath = path.join(STUDENT_DIRECTORY, req.params.filename);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending file:", err);
+      res.status(err.status).send("File not found");
+    } else {
+      console.log("Sent:", filePath);
+    }
+  });
+});
+
 // Route to serve an individual videos
 app.get("/videos/:filename", (req, res) => {
   const filePath = path.join(VIDEO_DIRECTORY, req.params.filename);
